@@ -1,1 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="auto"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Toplantı Yöneticisi</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1b2433;--mu:#6b778c;--pr:#2b5fd9;--bd:#e1e6ef;--ok:#1f9d63;--er:#d64545;--wa:#d98a14}
+:root[data-theme=dark]{--bg:#10151f;--card:#1a2130;--tx:#e8ecf3;--mu:#93a0b8;--bd:#2a3347;--pr:#6e95ff}
+@media(prefers-color-scheme:dark){:root[data-theme=auto]{--bg:#10151f;--card:#1a2130;--tx:#e8ecf3;--mu:#93a0b8;--bd:#2a3347;--pr:#6e95ff}}
+*{box-sizing:border-box}body{margin:0;font:14px/1.5 "Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--tx);display:flex;min-height:100vh}a{color:var(--pr)}
+aside{width:230px;flex:none;background:var(--card);border-right:1px solid var(--bd);padding:16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;margin-bottom:14px}
+aside button{all:unset;cursor:pointer;padding:9px 12px;border-radius:8px;color:var(--mu)}
+aside button:hover{background:var(--bg)}aside button.on{background:var(--pr);color:#fff}
+main{flex:1;min-width:0;padding:24px;max-width:1000px}h1{margin:0 0 16px;font-size:22px}h3{margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:14px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px}.grid .card{margin:0}
+.stat b{font-size:28px;display:block}.stat span{color:var(--mu)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.sp{flex:1;min-width:0}
+.btn{border:0;background:var(--pr);color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer;font:inherit}
+.btn.g{background:transparent;color:var(--tx);border:1px solid var(--bd)}.btn.d{background:var(--er)}
+input,textarea,select{width:100%;min-width:0;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+label{display:block;margin:12px 0 4px;color:var(--mu);font-size:12px}
+.item{padding:10px 0;border-bottom:1px solid var(--bd);cursor:pointer}.item:last-child{border:0}
+.tag{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--mu);border:1px solid var(--bd);text-decoration:none;white-space:nowrap}
+a.tag{color:var(--pr);cursor:pointer}
+.late{color:var(--er)}.soon{color:var(--wa)}.done{text-decoration:line-through;opacity:.55}.mu{color:var(--mu)}
+.pY{color:var(--er)}.pO{color:var(--wa)}.pD{color:var(--mu)}
+.irow{display:grid;grid-template-columns:minmax(0,1fr) 140px 140px 40px;gap:8px;margin-bottom:6px}
+.mr{border-bottom:1px solid var(--bd)}.mr:last-child{border:0}.mr .item{border:0;flex-wrap:nowrap}.ell{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tg{flex:none;width:24px;height:24px;line-height:22px;text-align:center;border:1px solid var(--bd);border-radius:6px;font-weight:700}
+.mb{padding:2px 0 14px 34px}.mb p{margin:4px 0}
 
+/* Tutanak Tablosu Stilleri */
+.min-table{width:100%;border-collapse:collapse;margin-top:10px;background:var(--card)}
+.min-table th, .min-table td{border:1px solid var(--bd);padding:10px 12px;text-align:left;vertical-align:top}
+.min-table th{background:rgba(0,0,0,0.03);font-weight:600;color:var(--mu);width:150px}
+:root[data-theme=dark] .min-table th{background:rgba(255,255,255,0.05)}
+.min-table .sec-hdr{background:var(--pr);color:#fff;font-weight:700;text-align:left}
+.min-table .num-col{width:40px;text-align:center;font-weight:bold}
+.min-table .due-col{width:120px}
+.min-table .owner-col{width:160px}
+
+@media(max-width:700px){body{flex-direction:column}aside{width:100%;height:auto;flex-direction:row;overflow:auto;position:static}.brand,#who{display:none}.irow{grid-template-columns:minmax(0,1fr) 40px}.irow input[type=date], .irow input[placeholder="Sorumlu"]{grid-column:1;grid-row:auto}}
+.cg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.cd{min-height:88px;border:1px solid var(--bd);border-radius:8px;padding:4px;background:var(--card);cursor:pointer;overflow:hidden;min-width:0}.cd.w{min-height:200px}.cd.o{opacity:.45}.cd.t{border-color:var(--pr)}.cd.s{outline:2px solid var(--pr)}
+.cc{font-size:11px;border-radius:4px;padding:1px 4px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cm{background:var(--pr);color:#fff}.ct{background:var(--bg);border:1px solid var(--bd)}
+.arow{display:grid;grid-template-columns:minmax(0,1fr) 190px 40px;gap:8px;margin-bottom:6px}
+@media(max-width:700px){.cd{min-height:60px}.cc{font-size:9px}.arow{grid-template-columns:minmax(0,1fr) 40px}.arow input:nth-child(2){grid-column:1}}
+</style></head><body>
+<aside>
+<div class="brand"><svg width="34" height="34" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2b5fd9"/><rect x="14" y="18" width="36" height="30" rx="5" fill="none" stroke="#fff" stroke-width="4"/><path d="M14 28h36" stroke="#fff" stroke-width="4"/><path d="M24 38l5 5 10-10" fill="none" stroke="#7CFFB2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 14v8M42 14v8" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>Toplantı<br>Yöneticisi</div>
+<button data-v="dash">📊 Dashboard</button><button data-v="list">📅 Toplantılar</button><button data-v="cal">🗓 Takvim</button><button data-v="mins">📝 Toplantı Tutanakları</button><button data-v="tasks">✅ Görevler</button><button data-v="owners">👥 Sorumlular</button><button data-v="tpl">📋 Şablonlar</button><button data-v="settings">⚙️ Ayarlar</button><button data-v="trash">🗑 Çöp Kutusu</button><div class="sp"></div>
+<div class="mu" id="who" style="font-size:12px;padding:0 12px"></div>
+<button id="nt">🔔 Bildirimler</button><button id="cs">📊 Excel (CSV)</button><button id="bk">💾 Yedekle</button><button id="rs">📂 Geri Yükle</button><input type="file" id="fl" accept=".json" hidden>
+</aside>
+<main id="m"></main><datalist id="dl_p"></datalist>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+let DB=ld('tm_db',[]),MIN=ld('tm_min',[]),TASKS=ld('tm_tasks',[]),TPL=ld('tm_tpl',[]),TRASH=ld('tm_trash',[]),PROF=ld('tm_prof',null),THEME=ld('tm_theme',{mode:'auto'});
+let view='dash',cur=null,flt='open',OPEN=new Set(),rl=()=>{},NX=[];
+const mkI=a=>(a||[]).map(t=>typeof t=='string'?{id:uid(),text:t,owner:'',due:'',done:false}:{owner:'',...t});
+const norm=()=>{DB.forEach(m=>{m.tag=m.tag||'';m.participants=m.participants||[];
+ if(m.tasks){m.tasks.forEach(t=>TASKS.push({...t,mid:m.id,pri:t.pri||'O'}));delete m.tasks}
+ const tp=mkI(m.topics),dc=mkI(m.decisions);delete m.topics;delete m.decisions;
+ if(tp.length||dc.length)MIN.push({id:uid(),no:'',title:m.title+' tutanağı',date:(m.when||'').slice(0,10),mid:m.id,prep:{...PROF},topics:tp,decisions:dc})});
+ MIN.forEach(n=>{n.no=n.no||'';n.topics=mkI(n.topics);n.decisions=mkI(n.decisions);n.prep=n.prep||{}})};
+const save=()=>{try{localStorage.setItem('tm_db',JSON.stringify(DB));localStorage.setItem('tm_min',JSON.stringify(MIN));localStorage.setItem('tm_tasks',JSON.stringify(TASKS));localStorage.setItem('tm_tpl',JSON.stringify(TPL));localStorage.setItem('tm_trash',JSON.stringify(TRASH))}catch(e){toast('Kayıt yapılamadı')}};
+const saveP=()=>localStorage.setItem('tm_prof',JSON.stringify(PROF));
+norm();save();
+function toast(t,undo){const d=document.createElement('div');d.style='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1b2433;color:#fff;padding:10px 16px;border-radius:8px;z-index:120;display:flex;gap:12px;align-items:center';d.append(t);if(undo){const b=document.createElement('button');b.textContent='Geri al';b.className='btn';b.style.padding='4px 10px';b.onclick=()=>{d.remove();undo()};d.append(b)}document.body.append(d);setTimeout(()=>d.remove(),undo?7000:2800)}
+function ask(msg,def,cb){const o=document.createElement('div');o.style='position:fixed;inset:0;background:#0007;display:flex;align-items:center;justify-content:center;z-index:98';
+ o.innerHTML=`<div class="card" style="width:min(380px,90vw);margin:0"><p>${esc(msg)}</p>${def===null?'':'<input id="ak" value="'+esc(def)+'">'}<div class="row" style="margin-top:12px"><button class="btn" id="ok">Tamam</button><button class="btn g" id="no">İptal</button></div></div>`;
+ document.body.append(o);const i=o.querySelector('#ak');o.querySelector('#ok').onclick=()=>{const v=i?i.value:true;o.remove();cb(v)};o.querySelector('#no').onclick=()=>o.remove();i&&i.focus()}
+const fd=d=>d?new Date(d).toLocaleString('tr-TR',{dateStyle:'medium',timeStyle:d.length>10?'short':undefined}):'-';
+const fday=d=>d?new Date(d).toLocaleDateString('tr-TR'):'-';
+const today=()=>new Date().toISOString().slice(0,10);
+const prepStr=p=>[p&&p.name,p&&p.dept,p&&p.role].filter(Boolean).join(' · ')||'-';
+const people=()=>[...new Set([...DB.flatMap(m=>m.participants),...TASKS.map(t=>t.owner),...MIN.flatMap(n=>[...n.topics,...n.decisions].map(i=>i.owner))].filter(Boolean))];
+const allTasks=()=>[...TASKS.map(t=>({...t,kind:'Görev',mt:(DB.find(m=>m.id==t.mid)||{}).title||'—'})),
+ ...MIN.flatMap(n=>[['Konu',n.topics],['Karar',n.decisions]].flatMap(([k,a])=>a.filter(i=>i.due||i.owner).map(i=>({...i,tid:n.id,mt:n.title,kind:k,pri:'O',owner:i.owner||''}))))];
+const find=id=>TASKS.find(t=>t.id==id)||MIN.flatMap(n=>[...n.topics,...n.decisions]).find(i=>i.id==id);
+const lk=t=>t.tid?`<a href="#" onclick="go('mind','${t.tid}');return false">${esc(t.mt)}</a>`:t.mid?`<a href="#" onclick="openMeet('${t.mid}');return false">${esc(t.mt)}</a>`:'Bağımsız';
+function tog(id){const t=find(id);if(t){t.done=!t.done;save();go(view,cur)}}
+function tcls(t){if(t.done||!t.due)return'';const d=(new Date(t.due)-new Date(today()))/864e5;return d<0?'late':d<=3?'soon':''}
+function openMeet(id){OPEN.add(id);go('list')}
+const NAV={new:'list',edit:'list',mind:'mins',minnew:'mins',minedit:'mins',tf:'tasks'};
+function go(v,id){view=v;cur=id||null;document.querySelectorAll('aside [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v==(NAV[v]||v)));
+ $('#dl_p').innerHTML=people().map(p=>`<option value="${esc(p)}">`).join('');
+ ({dash,list,cal,tasks,owners,trash,tpl,settings,mins,mind,new:()=>form(),edit:()=>form(DB.find(m=>m.id==cur)),minnew:()=>minForm(null,id),minedit:()=>minForm(MIN.find(x=>x.id==cur)),tf:()=>taskForm(id)})[v]();scrollTo(0,0)}
+document.querySelectorAll('aside [data-v]').forEach(b=>b.onclick=()=>{if(b.dataset.v=='list')OPEN.clear();go(b.dataset.v)});
+
+function applyTheme(){const r=document.documentElement;r.dataset.theme=THEME.mode||'auto';
+ ['pr','bg','card','tx'].forEach(k=>THEME[k]?r.style.setProperty('--'+k,THEME[k]):r.style.removeProperty('--'+k));$('#who').textContent=PROF?'👤 '+PROF.name:''}
+function profModal(){const o=document.createElement('div');o.style='position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:97';
+ o.innerHTML=`<div class="card" style="width:min(420px,92vw);margin:0"><h3>Hoş geldiniz 👋</h3><p class="mu">Bu bilgiler toplantı tutanaklarında ve PDF çıktısında "Hazırlayan" olarak görünür. Ayarlar'dan değiştirebilirsiniz.</p>
+ <label>İsim Soyisim *</label><input id="p_n"><label>Bölümünüz *</label><input id="p_d"><label>Göreviniz *</label><input id="p_r"><div class="row" style="margin-top:14px"><button class="btn" id="p_s">Kaydet ve Başla</button></div></div>`;
+ document.body.append(o);$('#p_n').focus();
+ $('#p_s').onclick=()=>{const n=$('#p_n').value.trim(),d=$('#p_d').value.trim(),r=$('#p_r').value.trim();if(!n||!d||!r)return toast('Tüm alanları doldurun');PROF={name:n,dept:d,role:r};saveP();o.remove();applyTheme()}}
+
+function settings(){const p=PROF||{},cv=k=>THEME[k]||getComputedStyle(document.documentElement).getPropertyValue('--'+k).trim();
+ $('#m').innerHTML=`<h1>Ayarlar</h1><div class="card"><h3>Kişisel bilgiler (Hazırlayan)</h3><label>İsim Soyisim</label><input id="s_n" value="${esc(p.name)}"><label>Bölüm</label><input id="s_d" value="${esc(p.dept)}"><label>Görev</label><input id="s_r" value="${esc(p.role)}"></div>
+ <div class="card"><h3>Tema</h3><label>Mod</label><select id="s_m"><option value="auto">Sistem</option><option value="light">Açık</option><option value="dark">Koyu</option></select>
+ <div class="grid" style="margin-top:6px">${[['pr','Ana renk'],['bg','Arka plan'],['card','Kart'],['tx','Yazı']].map(([k,l])=>`<div><label>${l}</label><input type="color" id="c_${k}" value="${cv(k)}" style="height:38px;padding:2px"></div>`).join('')}</div>
+ <label>Hazır ana renkler</label><div class="row">${['#2b5fd9','#1f9d63','#7c4dff','#e8590c','#d6336c','#0b7285'].map(c=>`<button class="btn" style="background:${c};width:34px;height:34px;padding:0" onclick="$('#c_pr').value='${c}'"></button>`).join('')}<button class="btn g" id="s_r2">Varsayılan renklere dön</button></div></div>
+ <button class="btn" id="s_s">Kaydet</button>`;
+ $('#s_m').value=THEME.mode||'auto';
+ $('#s_r2').onclick=()=>{THEME={mode:$('#s_m').value};applyTheme();localStorage.setItem('tm_theme',JSON.stringify(THEME));settings()};
+ $('#s_s').onclick=()=>{const n=$('#s_n').value.trim();if(!n)return toast('İsim Soyisim zorunlu');PROF={name:n,dept:$('#s_d').value.trim(),role:$('#s_r').value.trim()};saveP();
+  THEME={mode:$('#s_m').value};['pr','bg','card','tx'].forEach(k=>{const v=$('#c_'+k).value;if(v!=cv0[k])THEME[k]=v});
+  localStorage.setItem('tm_theme',JSON.stringify(THEME));applyTheme();toast('Ayarlar kaydedildi')};
+ const cv0={};['pr','bg','card','tx'].forEach(k=>cv0[k]=$('#c_'+k).value)}
+
+function dash(){
+ const T=allTasks(),open=T.filter(t=>!t.done),late=open.filter(t=>t.due&&t.due<today());
+ const up=DB.filter(m=>m.when>=new Date().toISOString().slice(0,16)).sort((a,b)=>a.when.localeCompare(b.when));
+ NX=open.filter(t=>t.due).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,8);
+ $('#m').innerHTML=`<h1>Dashboard</h1><div class="grid">
+ <div class="card stat"><b>${DB.length}</b><span>Toplantı</span></div><div class="card stat"><b>${MIN.length}</b><span>Tutanak</span></div><div class="card stat"><b>${up.length}</b><span>Yaklaşan toplantı</span></div>
+ <div class="card stat"><b>${open.length}</b><span>Açık madde/görev</span></div><div class="card stat"><b class="late">${late.length}</b><span>Geciken</span></div>
+ <div class="card stat"><b style="color:var(--ok)">${T.length?Math.round((T.length-open.length)/T.length*100):0}%</b><span>Tamamlanma</span></div>
+ <div class="card stat"><b class="pY">${open.filter(t=>t.pri=='Y').length}</b><span>Yüksek öncelikli</span></div></div>
+ <div class="card"><h3>Yaklaşan toplantılar</h3>${up.slice(0,5).map(m=>`<div class="item" onclick="openMeet('${m.id}')"><b>${esc(m.title)}</b><div class="mu">${fd(m.when)} · ${esc(m.location)}</div></div>`).join('')||'<span class="mu">Yok</span>'}</div>
+ <div class="card"><h3>Yaklaşan terminler</h3>${NX.map((t,i)=>`<div class="item" onclick="openT(${i})"><span class="${tcls(t)}">${fday(t.due)}</span> — ${esc(t.text)} <span class="tag">${t.kind}</span><div class="mu">${esc(t.mt)}</div></div>`).join('')||'<span class="mu">Yok</span>'}</div>`}
+function openT(i){const t=NX[i];t.tid?go('mind',t.tid):t.mid?openMeet(t.mid):go('tasks')}
+
+/* ---- Toplantılar ---- */
+const mrow=m=>{const o=OPEN.has(m.id),ns=MIN.filter(n=>n.mid==m.id).sort((a,b)=>b.date.localeCompare(a.date));
+ return `<div class="mr"><div class="item row" onclick="tgl('${m.id}')"><span class="tg">${o?'−':'+'}</span><b class="sp ell">${esc(m.title)}</b>${m.tag?`<span class="tag">${esc(m.tag)}</span>`:''}<span class="mu">${fd(m.when)}</span></div>
+ ${o?`<div class="mb"><p><b>Amaç:</b> ${esc(m.purpose)||'-'}</p><p><b>Yer:</b> ${esc(m.location)||'-'}</p><p><b>Katılımcılar:</b> ${m.participants.map(p=>`<span class="tag">${esc(p)}</span>`).join(' ')||'-'}</p>
+ ${(m.agenda||[]).length?`<p><b>Gündem:</b></p><ol style="margin:2px 0 6px">${m.agenda.map(a=>`<li>${esc(a.text)}${a.owner?` <span class="mu">(${esc(a.owner)})</span>`:''}</li>`).join('')}</ol>`:''}${m.dur?`<p><b>Süre:</b> ${Math.round(m.dur/60)} dk</p>`:''}<p><b>Tutanaklar:</b> ${ns.map(n=>`<a class="tag" href="#" onclick="go('mind','${n.id}');return false">📎 ${esc(n.title)}</a>`).join(' ')||'<span class="mu">Yok</span>'}</p>
+ <p class="mu">${TASKS.filter(t=>t.mid==m.id).length+ns.reduce((c,n)=>c+[...n.topics,...n.decisions].filter(i=>i.due||i.owner).length,0)} bağlı görev (tutanaktaki maddeler dahil)</p>
+ <div class="row"><button class="btn g" onclick="go('minnew','${m.id}')">${(m.agenda||[]).length?'📋 Gündemden tutanak':'+ Tutanak'}</button><button class="btn g" onclick="tmStart('${m.id}')">⏱ Başlat</button><button class="btn g" onclick="go('edit','${m.id}')">Düzenle</button><button class="btn g" onclick="ics('${m.id}')">📆 .ics</button><button class="btn g" onclick="gcal('${m.id}')">Google Takvim</button><button class="btn g" onclick="mkTpl('${m.id}')">Şablon yap</button><button class="btn d" onclick="delMeet('${m.id}')">Sil</button></div></div>`:''}</div>`};
+function tgl(id){OPEN.has(id)?OPEN.delete(id):OPEN.add(id);rl()}
+function list(){
+ $('#m').innerHTML=`<div class="row"><h1 class="sp">Toplantılar</h1><button class="btn" onclick="go('new')">➕ Yeni</button></div>
+ <input id="q" placeholder="Ara (başlık, katılımcı...)" style="margin-bottom:12px"><div class="card" id="ls" style="padding:6px 16px"></div>`;
+ rl=()=>{const q=$('#q').value.toLowerCase();$('#ls').innerHTML=DB.filter(m=>JSON.stringify(m).toLowerCase().includes(q)).sort((a,b)=>b.when.localeCompare(a.when)).map(mrow).join('')||'<div style="padding:10px 0" class="mu">Toplantı bulunamadı</div>'};
+ $('#q').oninput=rl;rl()}
+function form(m,base){
+ const isNew=!m;m=m||{title:'',purpose:'',participants:[],when:'',location:'',tag:'',...(base||{})};
+ $('#m').innerHTML=`<h1>${m.id?'Toplantıyı Düzenle':'Yeni Toplantı'}</h1><div class="card">
+ <label>Başlık *</label><input id="f_t" value="${esc(m.title)}"><label>Amaç</label><textarea id="f_p" rows="2">${esc(m.purpose)}</textarea>
+ <label>Tarih ve saat *</label><input type="datetime-local" id="f_w" value="${m.when}"><label>Yer / Link</label><input id="f_l" value="${esc(m.location)}"><label>Etiket / Proje</label><input id="f_g" value="${esc(m.tag)}">
+ <label>Katılımcılar (virgülle ayırın)</label><input id="f_k" value="${esc(m.participants.join(', '))}"><div id="ch" class="row" style="margin-top:6px"></div><label>Gündem maddeleri (toplantı öncesi, isteğe bağlı)</label>${ablock(m.agenda||[])}
+ ${isNew?'<label>Tekrar</label><div class="row"><select id="f_r" style="width:auto"><option value="">Tekrarlama</option><option value="7">Haftalık</option><option value="14">2 haftada bir</option><option value="M">Aylık</option></select><input id="f_n" type="number" min="2" max="52" value="4" style="width:80px"> kez</div>':''}
+ <div class="row" style="margin-top:16px"><button class="btn" id="sv">Kaydet</button><button class="btn g" onclick="go('list')">İptal</button></div></div>`;
+ $('#ch').innerHTML=people().map(p=>`<span class="tag" style="cursor:pointer" data-p="${esc(p)}">+ ${esc(p)}</span>`).join('');
+ document.querySelectorAll('#ch [data-p]').forEach(s=>s.onclick=()=>{const i=$('#f_k'),a=i.value.split(',').map(x=>x.trim()).filter(Boolean);if(!a.includes(s.dataset.p))a.push(s.dataset.p);i.value=a.join(', ')});
+ $('#sv').onclick=()=>{const title=$('#f_t').value.trim(),when=$('#f_w').value;if(!title||!when)return toast('Başlık ve tarih zorunlu');
+  const o={id:m.id||uid(),title,purpose:$('#f_p').value,when,location:$('#f_l').value,tag:$('#f_g').value.trim(),agenda:rda(),dur:m.dur||0,participants:$('#f_k').value.split(',').map(s=>s.trim()).filter(Boolean)};
+  if(m.id)DB[DB.findIndex(x=>x.id==m.id)]=o;else{DB.push(o);const rp=$('#f_r').value,cnt=+$('#f_n').value||1;
+   if(rp)for(let i=1;i<cnt;i++){const d=new Date(when);rp=='M'?d.setMonth(d.getMonth()+i):d.setDate(d.getDate()+i*+rp);const p=z=>String(z).padStart(2,'0');
+    DB.push({...o,id:uid(),dur:0,when:`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`})}}
+  save();go('list')}}
+
+/* ---- Tutanaklar ---- */
+const irow=(it={})=>`<div class="irow" data-id="${it.id||uid()}" data-done="${it.done?1:''}"><input placeholder="Konu başlığı ve aksiyon" value="${esc(it.text)}"><input placeholder="Sorumlu" list="dl_p" value="${esc(it.owner||'')}"><input type="date" title="Termin" value="${it.due||''}"><button class="btn g" type="button" onclick="this.parentNode.remove()" title="Sil">−</button></div>`;
+const iblock=(id,a)=>`<div id="${id}">${(a.length?a:[{}]).map(x=>irow(x)).join('')}</div><button class="btn g" type="button" onclick="document.getElementById('${id}').insertAdjacentHTML('beforeend',irow())">+ Madde ekle</button>`;
+const rd=id=>[...document.querySelectorAll('#'+id+' .irow')].map(r=>{const i=r.querySelectorAll('input');return{id:r.dataset.id,text:i[0].value.trim(),owner:i[1].value.trim(),due:i[2].value,done:!!r.dataset.done}}).filter(t=>t.text);
+function mins(){
+ $('#m').innerHTML=`<div class="row"><h1 class="sp">Toplantı Tutanakları</h1><button class="btn" onclick="go('minnew')">➕ Yeni</button></div>
+ <input id="q" placeholder="Ara..." style="margin-bottom:12px"><div class="card" id="ls"></div>`;
+ const r=()=>{const q=$('#q').value.toLowerCase();$('#ls').innerHTML=MIN.filter(n=>JSON.stringify(n).toLowerCase().includes(q)).sort((a,b)=>b.date.localeCompare(a.date)).map(n=>{const m=DB.find(x=>x.id==n.mid);
+  return `<div class="item" onclick="go('mind','${n.id}')"><b>${n.no?esc(n.no)+' - ':''}${esc(n.title)}</b> ${m?`<span class="tag">📎 ${esc(m.title)}</span>`:''}<div class="mu">${fday(n.date)} · Hazırlayan: ${esc(n.prep.name||'-')} · ${n.topics.length+n.decisions.length} madde/aksiyon</div></div>`}).join('')||'<span class="mu">Tutanak yok</span>'};
+ $('#q').oninput=r;r()}
+function minForm(n,mid0){const isNew=!n;n=n||{no:'',title:'',date:today(),mid:mid0||'',prep:{...PROF},topics:[],decisions:[],att:{},files:[]};
+ $('#m').innerHTML=`<h1>${isNew?'Yeni Toplantı Tutanağı':'Tutanağı Düzenle'}</h1><div class="card">
+ <div class="row"><div style="width:120px"><label>Toplantı No</label><input id="n_no" value="${esc(n.no)}"></div><div class="sp"><label>Toplantı Konusu / Başlık *</label><input id="n_t" value="${esc(n.title)}"></div></div>
+ <label>Tarih</label><input type="date" id="n_d" value="${n.date}">
+ <label>Hangi toplantı için? (isteğe bağlı)</label><select id="n_m"><option value="">— Seçilmedi —</option>${DB.slice().sort((a,b)=>b.when.localeCompare(a.when)).map(m=>`<option value="${m.id}">${esc(m.title)} (${fday(m.when)})</option>`).join('')}</select>
+ <label>Hazırlayan</label><input readonly value="${esc(prepStr(n.prep))}">
+ <label>Katılım durumu</label><div id="att"></div>
+ <label>Dosya ekleri (en fazla 20 MB/dosya)</label><div id="fl_l"></div><input type="file" id="n_f" multiple>
+ <label>Konu Başlıkları ve Aksiyonlar</label>${iblock('f_c',n.topics)}<div class="row" style="margin-top:6px"><button class="btn g" type="button" onclick="impAg()">📋 Gündemi aktar</button></div>
+ <label>Alınan Kararlar / Ek Maddeler</label>${iblock('f_d',n.decisions)}
+ <div class="row" style="margin-top:16px"><button class="btn" id="sv">Kaydet</button><button class="btn g" onclick="go('mins')">İptal</button></div></div>`;
+ $('#n_m').value=n.mid||'';
+ let AT0={...(n.att||{})},FL=[...(n.files||[])];const ORIG=[...FL];
+ const readAtt=()=>Object.fromEntries([...document.querySelectorAll('#att select')].map(s=>[s.dataset.p,s.value]));
+ const rAtt=()=>{const m=DB.find(x=>x.id==$('#n_m').value);$('#att').innerHTML=m&&m.participants.length?m.participants.map(p=>`<div class="row" style="margin-bottom:4px"><span class="sp ell">${esc(p)}</span><select data-p="${esc(p)}" style="width:auto"><option value="K">Katıldı</option><option value="M">Mazeretli</option><option value="Y">Katılmadı</option></select></div>`).join(''):'<span class="mu">Toplantı seçilince katılımcılar listelenir</span>';document.querySelectorAll('#att select').forEach(s=>s.value=AT0[s.dataset.p]||'K')};
+ const rFl=()=>{$('#fl_l').innerHTML=FL.map((f,i)=>`<div class="row" style="margin-bottom:4px">📎 <span class="sp ell">${esc(f.name)} <span class="mu">(${(f.size/1024).toFixed(0)} KB)</span></span><button class="btn g" type="button" onclick="FLrm(${i})">✕</button></div>`).join('')};
+ window.FLrm=i=>{FL.splice(i,1);rFl()};
+ $('#n_f').onchange=e=>{[...e.target.files].forEach(f=>{if(f.size>20e6)return toast(f.name+' çok büyük (en fazla 20 MB)');FL.push({id:uid(),name:f.name,size:f.size,type:f.type,blob:f})});e.target.value='';rFl()};
+ const fill=()=>{const m=DB.find(x=>x.id==$('#n_m').value);if(m){if(!$('#n_t').value.trim())$('#n_t').value=m.title;if(isNew)$('#n_d').value=m.when.slice(0,10);if(isNew&&!rd('f_c').length)impAg(1)}};
+ $('#n_m').onchange=()=>{AT0={...AT0,...readAtt()};fill();rAtt()};if(isNew&&mid0)fill();rAtt();rFl();
+ $('#sv').onclick=()=>{const title=$('#n_t').value.trim();if(!title)return toast('Başlık zorunlu');
+  const o={id:n.id||uid(),no:$('#n_no').value.trim(),title,date:$('#n_d').value||today(),mid:$('#n_m').value,prep:n.prep,topics:rd('f_c'),decisions:rd('f_d'),att:readAtt(),files:FL.map(({id,name,size,type})=>({id,name,size,type}))};
+  n.id?MIN[MIN.findIndex(x=>x.id==n.id)]=o:MIN.push(o);save();
+  Promise.all([...FL.filter(f=>f.blob).map(f=>fPut({id:f.id,name:f.name,type:f.type,blob:f.blob})),...ORIG.filter(f=>!FL.some(g=>g.id==f.id)).map(f=>fDel(f.id))]).catch(()=>toast('Dosyalar kaydedilemedi')).then(()=>go('mind',o.id))}}
+
+function mind(){const n=MIN.find(x=>x.id==cur);if(!n)return go('mins');const m=DB.find(x=>x.id==n.mid);
+ const allItems=[...n.topics, ...n.decisions];
+ $('#m').innerHTML=`<div class="row"><h1 class="sp">Toplantı Tutanağı</h1><button class="btn" onclick="pdf('${n.id}')">📄 PDF</button><button class="btn g" onclick="docx('${n.id}')">📝 Word</button><button class="btn g" onclick="mailGo('${n.id}')">✉ E-posta</button><button class="btn g" onclick="go('minedit','${n.id}')">Düzenle</button><button class="btn d" onclick="delMin('${n.id}')">Sil</button></div>
+ <div class="card" style="padding:0;overflow:hidden">
+   <table class="min-table">
+     <tr>
+       <th>Toplantı No</th>
+       <td>${esc(n.no)||'-'}</td>
+       <th>Toplantı Tarihi</th>
+       <td>${fday(n.date)}</td>
+       <th>Toplantı Yeri</th>
+       <td>${m&&m.location?esc(m.location):'-'}</td>
+     </tr>
+     <tr>
+       <th>Toplantı Konusu</th>
+       <td colspan="5"><b>${esc(n.title)}</b></td>
+     </tr>
+     <tr>
+       <th>Katılımcılar</th>
+       <td colspan="5">${m&&m.participants.length?m.participants.map(p=>`<span class="tag">${esc(p)}${n.att&&n.att[p]?' · '+AT[n.att[p]]:''}</span>`).join(' '):'-'}</td>
+     </tr>
+     <tr>
+       <th>Hazırlayan</th>
+       <td colspan="5">${esc(prepStr(n.prep))}</td>
+     </tr>
+   </table>
+   
+   <table class="min-table" style="margin-top:-1px">
+     <thead>
+       <tr class="sec-hdr">
+         <th colspan="2" style="color:#fff">Konu Başlıkları ve Aksiyonlar</th>
+         <th style="color:#fff;width:160px">Sorumlu</th>
+         <th style="color:#fff;width:120px">Termin</th>
+       </tr>
+     </thead>
+     <tbody>
+       ${allItems.length?allItems.map((item,idx)=>`
+         <tr>
+           <td class="num-col">${idx+1}</td>
+           <td><div class="${item.done?'done':''}">${esc(item.text)}</div></td>
+           <td class="owner-col">${item.owner?esc(item.owner):'-'}</td>
+           <td class="due-col"><b class="${tcls(item)}">${item.due?fday(item.due):'-'}</b></td>
+         </tr>
+       `).join(''):'<tr><td colspan="4" class="mu" style="text-align:center">Madde bulunamadı</td></tr>'}
+     </tbody>
+   </table>
+ </div>${(n.files||[]).length?`<div class="card"><h3>Ekler</h3>${n.files.map((f,i)=>`<div class="item row" onclick="openF('${n.id}',${i})"><span>📎</span><b class="sp ell">${esc(f.name)}</b><span class="mu">${(f.size/1024).toFixed(0)} KB</span></div>`).join('')}</div>`:''}`}
+
+/* ---- Görevler ---- */
+function tasks(){
+ $('#m').innerHTML=`<div class="row"><h1 class="sp">Görevler</h1><button class="btn" onclick="go('tf')">➕ Yeni görev</button></div>
+ <div class="row" style="margin-bottom:12px">${[['open','Açık'],['late','Geciken'],['done','Tamamlanan'],['all','Tümü']].map(([k,v])=>`<button class="btn g" data-f="${k}">${v}</button>`).join('')}</div><div class="card" id="tl"></div>`;
+ const r=()=>{document.querySelectorAll('[data-f]').forEach(b=>b.className='btn'+(b.dataset.f==flt?'':' g'));
+  const L=allTasks().filter(t=>flt=='all'||(flt=='open'&&!t.done)||(flt=='done'&&t.done)||(flt=='late'&&!t.done&&t.due&&t.due<today())).sort((a,b)=>(a.due||'9').localeCompare(b.due||'9'));
+  $('#tl').innerHTML=L.map(t=>`<div class="item row" style="cursor:default"><input type="checkbox" style="width:auto" ${t.done?'checked':''} onchange="tog('${t.id}')">
+  <div class="sp ${t.done?'done':''}"><span class="p${t.pri}">●</span> ${esc(t.text)} <span class="tag">${t.kind}</span><div class="mu">${lk(t)}${t.owner?' · '+esc(t.owner):''}</div></div>
+  <b class="${tcls(t)}">${fday(t.due)}</b>${t.kind=='Görev'?`<button class="btn g" onclick="go('tf','${t.id}')">✎</button><button class="btn g" onclick="delTask('${t.id}')">✕</button>`:''}</div>`).join('')||'<span class="mu">Kayıt yok</span>'};
+ document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{flt=b.dataset.f;r()});r()}
+function taskForm(id){const t=TASKS.find(x=>x.id==id)||{text:'',owner:'',due:'',pri:'O',mid:''};
+ $('#m').innerHTML=`<h1>${id?'Görevi Düzenle':'Yeni Görev'}</h1><div class="card"><label>Görev *</label><input id="g_t" value="${esc(t.text)}"><label>Sorumlu</label><input id="g_o" list="dl_p" value="${esc(t.owner)}">
+ <label>Termin</label><input type="date" id="g_d" value="${t.due}"><label>Öncelik</label><select id="g_p"><option value="Y">Yüksek</option><option value="O">Orta</option><option value="D">Düşük</option></select>
+ <label>İlgili toplantı (isteğe bağlı)</label><select id="g_m"><option value="">—</option>${DB.map(m=>`<option value="${m.id}">${esc(m.title)} (${fday(m.when)})</option>`).join('')}</select>
+ <div class="row" style="margin-top:16px"><button class="btn" id="g_s">Kaydet</button><button class="btn g" onclick="go('tasks')">İptal</button></div></div>`;
+ $('#g_p').value=t.pri;$('#g_m').value=t.mid||'';
+ $('#g_s').onclick=()=>{const text=$('#g_t').value.trim();if(!text)return toast('Görev metni zorunlu');
+  const o={id:t.id||uid(),text,owner:$('#g_o').value.trim(),due:$('#g_d').value,pri:$('#g_p').value,mid:$('#g_m').value,done:!!t.done};
+  id?TASKS[TASKS.findIndex(x=>x.id==id)]=o:TASKS.push(o);save();go('tasks')}}
+
+/* ---- Şablon, takvim, PDF, CSV, bildirim, yedek ---- */
+function mkTpl(id){const m=DB.find(x=>x.id==id);ask('Şablon adı:',m.title,n=>{if(!n)return;TPL.push({id:uid(),name:n,title:m.title,purpose:m.purpose,participants:m.participants,tag:m.tag,location:m.location,agenda:m.agenda||[]});save();toast('Şablon kaydedildi')})}
+function tpl(){$('#m').innerHTML=`<h1>Şablonlar</h1><div class="card">${TPL.map(t=>`<div class="item row" style="cursor:default"><div class="sp"><b>${esc(t.name)}</b><div class="mu">${t.participants.length} katılımcı</div></div><button class="btn" onclick="form(null,TPL.find(x=>x.id=='${t.id}'))">Kullan</button><button class="btn g" onclick="TPL=TPL.filter(x=>x.id!='${t.id}');save();tpl()">Sil</button></div>`).join('')||'<span class="mu">Henüz şablon yok. Toplantı satırını açıp "Şablon yap" düğmesine basın.</span>'}</div>`}
+function dl(data,name,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name.replace(/[\\/:*?"<>|]/g,'');document.body.append(a);a.click();a.remove()}
+const iso=d=>d.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+function ics(id){const m=DB.find(x=>x.id==id),s=new Date(m.when),e=new Date(+s+36e5),t=x=>String(x).replace(/[,;\n]/g,' ');
+ dl('BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:'+m.id+'@tm\r\nDTSTAMP:'+iso(new Date)+'\r\nDTSTART:'+iso(s)+'\r\nDTEND:'+iso(e)+'\r\nSUMMARY:'+t(m.title)+'\r\nLOCATION:'+t(m.location)+'\r\nDESCRIPTION:'+t(m.purpose)+'\r\nBEGIN:VALARM\r\nTRIGGER:-PT15M\r\nACTION:DISPLAY\r\nDESCRIPTION:Toplantı yaklaşıyor\r\nEND:VALARM\r\nBEGIN:VALARM\r\nTRIGGER:-P1D\r\nACTION:DISPLAY\r\nDESCRIPTION:Yarın toplantı var\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR',m.title+'.ics','text/calendar');toast('.ics indirildi; varsayılan takvim uygulamanızla açılır (15 dk ve 1 gün önce alarm ekli)')}
+function gcal(id){const m=DB.find(x=>x.id==id),s=new Date(m.when),a=document.createElement('a');a.target='_blank';a.rel='noopener';
+ a.href='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(m.title)+'&dates='+iso(s)+'/'+iso(new Date(+s+36e5))+'&details='+encodeURIComponent(m.purpose)+'&location='+encodeURIComponent(m.location);a.click()}
+
+function pdf(id,ret){const n=MIN.find(x=>x.id==id),m=DB.find(x=>x.id==n.mid),W=1240,H=1754,M=80,CW=W-2*M,FN='"Segoe UI",Arial,sans-serif',pages=[],F=(s,b)=>(b?'bold ':'')+s+'px '+FN;let x,y;
+ const np=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);pages.push({c,x});y=M};
+ const wrap=(s,f,mw)=>{x.font=f;const L=[];let ln='';for(const w of String(s).split(' ')){const t=ln?ln+' '+w:w;if(x.measureText(t).width>mw&&ln){L.push(ln);ln=w}else ln=t}L.push(ln);return L};
+
+ np();
+ const BC='#0070C0',LB='#DEEAF6',pad=14,lh=30;
+ const cell=(txt,cx,cy,cw,ch,o={})=>{x.fillStyle=o.bg||'#fff';x.fillRect(cx,cy,cw,ch);x.strokeStyle=BC;x.lineWidth=2;x.strokeRect(cx,cy,cw,ch);
+  x.fillStyle='#1b2433';x.font=F(22,o.b);const L=wrap(txt,F(22,o.b),cw-2*pad),sy=cy+(ch-L.length*lh)/2+22;
+  L.forEach((l,i)=>{x.font=F(22,o.b);x.fillText(l,o.c?cx+(cw-x.measureText(l).width)/2:cx+pad,sy+i*lh)})};
+ const hgt=(t,cw,b)=>Math.max(58,wrap(t,F(22,b),cw-2*pad).length*lh+24);
+ x.font=F(38,1);x.fillStyle='#1b2433';const tt='TOPLANTI TUTANAĞI';x.fillText(tt,(W-x.measureText(tt).width)/2,y+38);y+=88;
+ const w6=[190,140,200,170,170,CW-870],r1=[['Toplantı No',1],[n.no||'-',0],['Toplantı Tarihi',1],[fday(n.date),0],['Toplantı Yeri',1],[m&&m.location||'-',0]];
+ const h1=Math.max(...r1.map((c,i)=>hgt(c[0],w6[i],c[1])));let cx=M;r1.forEach((c,i)=>{cell(c[0],cx,y,w6[i],h1,{b:c[1],bg:c[1]?LB:'#fff',c:!c[1]&&i<5});cx+=w6[i]});y+=h1;
+ [['Toplantı Konusu',n.title,1],['Katılımcılar',attStr(n,m),0],['Hazırlayan',prepStr(n.prep),0]].forEach(([l,v,b])=>{
+  const h=Math.max(hgt(l,190,1),hgt(v,CW-190,b));cell(l,M,y,190,h,{b:1,bg:LB});cell(v,M+190,y,CW-190,h,{b});y+=h});
+ const cN=70,cR=230,cD=170,cT=CW-cN-cR-cD;
+ const head=()=>{cell('Konu Başlıkları ve Aksiyonlar',M,y,cN+cT,58,{b:1,bg:LB,c:1});cell('Sorumlu',M+cN+cT,y,cR,58,{b:1,bg:LB,c:1});cell('Termin',M+cN+cT+cR,y,cD,58,{b:1,bg:LB,c:1});y+=58};
+ head();
+ [...n.topics,...n.decisions].forEach((it,i)=>{const h=Math.max(58,wrap(it.text,F(22),cT-2*pad).length*lh+24);
+  if(y+h>H-M-30){np();head()}
+  cell(String(i+1),M,y,cN,h,{c:1});cell(it.text,M+cN,y,cT,h);cell(it.owner||'-',M+cN+cT,y,cR,h,{c:1});cell(it.due?fday(it.due):'-',M+cN+cT+cR,y,cD,h,{c:1});y+=h});
+
+ const N=pages.length;pages.forEach((p,i)=>{x=p.x;
+  x.font=F(18);x.fillStyle='#8a94a8';x.textAlign='center';x.fillText('Sayfa '+(i+1)+' / '+N,W/2,H-30);x.textAlign='left';});
+
+ const enc=new TextEncoder(),parts=[],off=[];let len=0;const add=d=>{const b=typeof d=='string'?enc.encode(d):d;parts.push(b);len+=b.length};
+ const o=(k,fn)=>{off[k]=len;add(k+' 0 obj\n');fn();add('\nendobj\n')};add('%PDF-1.4\n');
+ o(1,()=>add('<</Type/Catalog/Pages 2 0 R>>'));o(2,()=>add('<</Type/Pages/Count '+N+'/Kids['+pages.map((_,i)=>(3+3*i)+' 0 R').join(' ')+']>>'));
+ pages.forEach((p,i)=>{const b=3+3*i,u=Uint8Array.from(atob(p.c.toDataURL('image/jpeg',.93).split(',')[1]),ch=>ch.charCodeAt(0)),cs='q 595 0 0 842 0 0 cm /I Do Q';
+  o(b,()=>add('<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Resources<</XObject<</I '+(b+2)+' 0 R>>>>/Contents '+(b+1)+' 0 R>>'));
+  o(b+1,()=>add('<</Length '+cs.length+'>>\nstream\n'+cs+'\nendstream'));
+  o(b+2,()=>{add('<</Type/XObject/Subtype/Image/Width '+W+'/Height '+H+'/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length '+u.length+'>>\nstream\n');add(u);add('\nendstream')})});
+ const xr=len,T=3*N+3;add('xref\n0 '+T+'\n0000000000 65535 f \n');for(let k=1;k<T;k++)add(String(off[k]).padStart(10,'0')+' 00000 n \n');
+ add('trailer\n<</Size '+T+'/Root 1 0 R>>\nstartxref\n'+xr+'\n%%EOF');const blob=new Blob(parts,{type:'application/pdf'});if(ret)return blob;dl(blob,n.title+'.pdf','application/pdf');toast('PDF indirildi')}
+
+/* ---- Word, e-posta, sorumlu takibi, yedek hatırlatma ---- */
+const crcT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc=b=>{let c=~0;for(const v of b)c=crcT[(c^v)&255]^(c>>>8);return ~c>>>0};
+function zip(files){const e=new TextEncoder(),P=[],C=[];let o=0;const u16=v=>[v&255,v>>8&255],u32=v=>[v&255,v>>8&255,v>>16&255,v>>>24];
+ files.forEach(([name,txt])=>{const nb=e.encode(name),d=e.encode(txt),c=crc(d);
+  const lh=new Uint8Array([0x50,0x4b,3,4,...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(c),...u32(d.length),...u32(d.length),...u16(nb.length),...u16(0)]);
+  P.push(lh,nb,d);C.push(new Uint8Array([0x50,0x4b,1,2,...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(c),...u32(d.length),...u32(d.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(o)]),nb);o+=lh.length+nb.length+d.length});
+ const cd=C.reduce((a,b)=>a+b.length,0);
+ return new Blob([...P,...C,new Uint8Array([0x50,0x4b,5,6,0,0,0,0,...u16(files.length),...u16(files.length),...u32(cd),...u32(o),0,0])],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
+function docx(id,ret){const n=MIN.find(x=>x.id==id),m=DB.find(x=>x.id==n.mid),X=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+ const B='<w:tblBorders>'+['top','left','bottom','right','insideH','insideV'].map(k=>`<w:${k} w:val="single" w:sz="4" w:space="0" w:color="0070C0"/>`).join('')+'</w:tblBorders>';
+ const tc=(t,w,o={})=>`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${o.s?`<w:gridSpan w:val="${o.s}"/>`:''}${o.f?`<w:shd w:val="clear" w:color="auto" w:fill="${o.f}"/>`:''}<w:vAlign w:val="center"/></w:tcPr><w:p><w:pPr><w:spacing w:before="60" w:after="60"/>${o.c?'<w:jc w:val="center"/>':''}</w:pPr><w:r><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>${o.b?'<w:b/>':''}<w:sz w:val="22"/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r></w:p></w:tc>`;
+ const tr=c=>`<w:tr><w:trPr><w:trHeight w:val="500"/></w:trPr>${c}</w:tr>`;
+ const tbl=(g,rows)=>`<w:tbl><w:tblPr><w:tblW w:w="10349" w:type="dxa"/><w:tblInd w:w="-176" w:type="dxa"/>${B}<w:tblLayout w:type="fixed"/></w:tblPr><w:tblGrid>${g.map(w=>`<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>${rows}</w:tbl>`;
+ const LBL='DEEAF6',g1=[1844,1200,1700,1400,1500,2705];
+ let t1=tr(tc('Toplantı No',g1[0],{b:1,f:LBL})+tc(n.no||'-',g1[1],{c:1})+tc('Toplantı Tarihi',g1[2],{b:1,f:LBL})+tc(fday(n.date),g1[3],{c:1})+tc('Toplantı Yeri',g1[4],{b:1,f:LBL})+tc(m&&m.location||'-',g1[5]));
+ [['Toplantı Konusu',n.title,1],['Katılımcılar',attStr(n,m),0],['Hazırlayan',prepStr(n.prep),0]].forEach(([l,v,b])=>t1+=tr(tc(l,g1[0],{b:1,f:LBL})+tc(v,10349-g1[0],{s:5,b})));
+ const g2=[700,5649,2300,1700],it=[...n.topics,...n.decisions];
+ let t2=tr(tc('Konu Başlıkları ve Aksiyonlar',g2[0]+g2[1],{s:2,b:1,c:1,f:LBL})+tc('Sorumlu',g2[2],{b:1,c:1,f:LBL})+tc('Termin',g2[3],{b:1,c:1,f:LBL}));
+ it.forEach((i,k)=>t2+=tr(tc(String(k+1),g2[0],{c:1})+tc(i.text,g2[1])+tc(i.owner||'-',g2[2],{c:1})+tc(i.due?fday(i.due):'-',g2[3],{c:1})));
+ const gap='<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="40" w:lineRule="exact"/></w:pPr></w:p>';
+ const title='<w:p><w:pPr><w:spacing w:after="240"/><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/><w:b/><w:sz w:val="32"/></w:rPr><w:t>TOPLANTI TUTANAĞI</w:t></w:r></w:p>';
+ const doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+title+tbl(g1,t1)+gap+tbl(g2,t2)+'<w:p/><w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1417" w:right="1417" w:bottom="1417" w:left="993" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>';
+ const zb=zip([['[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
+  ['_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],['word/document.xml',doc]]);if(ret)return zb;dl(zb,n.title+'.docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document');toast('Word dosyası indirildi')}
+const emails=m=>(m?m.participants:[]).map(p=>(p.match(/[^\s<>,;]+@[^\s<>,;]+/)||[''])[0]).filter(Boolean);
+function mailBody(n,m,short){const L=[...n.topics,...n.decisions];
+ let b='Merhaba,\n\n'+(n.no?n.no+' - ':'')+n.title+' toplantı tutanağı'+(short?' aşağıdadır.':' ektedir.')+'\nTarih: '+fday(n.date)+(m&&m.location?'\nYer: '+m.location:'')+'\n\nKonu Başlıkları ve Aksiyonlar:\n'+L.map((i,k)=>(k+1)+'. '+i.text+(i.owner?' | Sorumlu: '+i.owner:'')+(i.due?' | Termin: '+fday(i.due):'')).join('\n')+'\n\nİyi çalışmalar,\n'+(PROF?PROF.name+'\n'+[PROF.role,PROF.dept].filter(Boolean).join(' - '):'');
+ return short&&b.length>1500?b.slice(0,1450)+'\n... (devamı için ekteki dosyaya bakınız)':b}
+function mail(id){const n=MIN.find(x=>x.id==id),m=DB.find(x=>x.id==n.mid);pdf(id);
+ setTimeout(()=>{const a=document.createElement('a');a.href='mailto:'+emails(m).join(',')+'?subject='+encodeURIComponent('Toplantı Tutanağı: '+n.title)+'&body='+encodeURIComponent(mailBody(n,m,1));a.click();toast('PDF indirildi; e-posta taslağına sürükleyip ekleyin')},400)}
+const mailGo=id=>window.native?mailDlg(id):mail(id);
+function mailDlg(id){const n=MIN.find(x=>x.id==id),m=DB.find(x=>x.id==n.mid),o=document.createElement('div');
+ o.style='position:fixed;inset:0;background:#0007;display:flex;align-items:flex-start;justify-content:center;z-index:98;overflow:auto';
+ o.innerHTML=`<div class="card" style="width:min(580px,94vw);margin:20px 12px"><h3>Tutanağı e-posta ile gönder</h3><label>Kime (; ile ayırın)</label><input id="e_to" value="${esc(emails(m).join('; '))}"><label>Bilgi (CC)</label><input id="e_cc">
+ <label>Konu</label><input id="e_s" value="${esc('Toplantı Tutanağı: '+n.title)}"><label>İleti</label><textarea id="e_b" rows="9">${esc(mailBody(n,m))}</textarea>
+ <div class="row" style="margin-top:8px"><label style="margin:0"><input type="checkbox" id="e_p" checked style="width:auto"> PDF ekle</label><label style="margin:0"><input type="checkbox" id="e_w" style="width:auto"> Word ekle</label></div>
+ <p class="mu" style="font-size:12px">Klasik Outlook (masaüstü) gerekir. "Gönder" iletiyi hemen yollar, "Taslak aç" Outlook'ta düzenlemek için ekli olarak açar.</p>
+ <div class="row"><button class="btn" id="e_g">Gönder</button><button class="btn g" id="e_t">Taslak olarak aç</button><button class="btn g" id="e_x">İptal</button></div></div>`;
+ document.body.append(o);
+ const run=async send=>{const at=[];try{if($('#e_p').checked)at.push({name:n.title+'.pdf',data:await pdf(id,1).arrayBuffer()});if($('#e_w').checked)at.push({name:n.title+'.docx',data:await docx(id,1).arrayBuffer()})}catch(e){return toast('Ek hazırlanamadı')}
+  const bs=o.querySelectorAll('button');bs.forEach(b=>b.disabled=true);toast(send?'Gönderiliyor...':'Outlook açılıyor...');
+  let r;try{r=await window.native.sendMail({to:$('#e_to').value,cc:$('#e_cc').value,subject:$('#e_s').value,body:$('#e_b').value,attachments:at,send})}catch(e){r={ok:false,error:String(e)}}
+  bs.forEach(b=>b.disabled=false);if(r.ok){o.remove();toast(send?'E-posta gönderildi ✔':'Taslak Outlook\'ta açıldı')}else toast('Outlook hatası: '+String(r.error||'bilinmiyor').slice(0,160))};
+ $('#e_g').onclick=()=>{if(!$('#e_to').value.trim())return toast('Alıcı adresi girin');run(true)};$('#e_t').onclick=()=>run(false);$('#e_x').onclick=()=>o.remove()}
+let OW=new Set(),KS=[];
+function tgO(i){const k=KS[i];OW.has(k)?OW.delete(k):OW.add(k);owners()}
+function owners(){const g={};allTasks().forEach(t=>{const k=t.owner||'(Atanmamış)';(g[k]=g[k]||[]).push(t)});
+ KS=Object.keys(g).sort((a,b)=>g[b].filter(t=>!t.done).length-g[a].filter(t=>!t.done).length);
+ $('#m').innerHTML='<h1>Sorumlu Bazlı Takip</h1>'+(KS.map((k,i)=>{const L=g[k],op=L.filter(t=>!t.done),lt=op.filter(t=>t.due&&t.due<today()),dn=L.length-op.length,pc=Math.round(dn/L.length*100),o=OW.has(k);
+  return `<div class="card"><div class="row" style="cursor:pointer" onclick="tgO(${i})"><span class="tg">${o?'−':'+'}</span><b class="sp ell">${esc(k)}</b><span class="tag">Açık ${op.length}</span><span class="tag ${lt.length?'late':''}">Geciken ${lt.length}</span><span class="tag">Tamamlanan ${dn}</span></div>
+  <div style="height:6px;background:var(--bd);border-radius:3px;margin:10px 0 2px"><div style="height:6px;width:${pc}%;background:var(--ok);border-radius:3px"></div></div>
+  ${o?L.sort((a,b)=>(a.done-b.done)||(a.due||'9').localeCompare(b.due||'9')).map(t=>`<div class="item row" style="cursor:default"><input type="checkbox" style="width:auto" ${t.done?'checked':''} onchange="tog('${t.id}')"><div class="sp ${t.done?'done':''}">${esc(t.text)} <span class="tag">${t.kind}</span><div class="mu">${lk(t)}</div></div><b class="${tcls(t)}">${fday(t.due)}</b></div>`).join(''):''}</div>`}).join('')||'<div class="card mu">Kayıt yok</div>')}
+function bkCheck(){if(!DB.length&&!MIN.length&&!TASKS.length||$('#bkb'))return;const last=+localStorage.getItem('tm_lastbk')||0,sn=+localStorage.getItem('tm_bksnooze')||0,now=Date.now();if(now-last<7*864e5||now<sn)return;
+ const b=document.createElement('div');b.id='bkb';b.style='position:fixed;top:12px;left:50%;transform:translateX(-50%);background:var(--card);color:var(--tx);border:1px solid var(--wa);border-radius:10px;padding:10px 14px;z-index:90;box-shadow:0 4px 16px #0003;display:flex;gap:10px;align-items:center;flex-wrap:wrap;max-width:92vw';
+ b.innerHTML=`<span>💾 ${last?Math.floor((now-last)/864e5)+' gündür yedek alınmadı.':'Henüz yedek alınmadı.'}</span><button class="btn" id="bkn">Şimdi yedekle</button><button class="btn g" id="bkl">Yarın hatırlat</button>`;
+ document.body.append(b);$('#bkn').onclick=bkNow;$('#bkl').onclick=()=>{localStorage.setItem('tm_bksnooze',Date.now()+864e5);b.remove()}}
+
+/* ---- Takvim, gündem, katılım, ekler, çöp kutusu, süre sayacı ---- */
+const AT={K:'Katıldı',M:'Mazeretli',Y:'Katılmadı'},attStr=(n,m)=>m&&m.participants.length?m.participants.map(p=>p+(n.att&&n.att[p]?' ('+AT[n.att[p]]+')':'')).join(', '):'-';
+const arow=(a={})=>`<div class="arow" data-id="${a.id||uid()}"><input placeholder="Gündem maddesi" value="${esc(a.text)}"><input placeholder="Sunan (isteğe bağlı)" list="dl_p" value="${esc(a.owner||'')}"><button class="btn g" type="button" onclick="this.parentNode.remove()" title="Sil">−</button></div>`;
+const ablock=a=>`<div id="f_a">${(a.length?a:[{}]).map(x=>arow(x)).join('')}</div><button class="btn g" type="button" onclick="document.getElementById('f_a').insertAdjacentHTML('beforeend',arow())">+ Gündem ekle</button>`;
+const rda=()=>[...document.querySelectorAll('#f_a .arow')].map(r=>{const i=r.querySelectorAll('input');return{id:r.dataset.id,text:i[0].value.trim(),owner:i[1].value.trim()}}).filter(a=>a.text);
+function impAg(q){const m=DB.find(x=>x.id==$('#n_m').value),A=m&&m.agenda||[];if(!A.length)return q||toast('Bu toplantının gündemi yok');
+ const box=$('#f_c');box.querySelectorAll('.irow').forEach(r=>{if(!r.querySelector('input').value.trim())r.remove()});
+ const have=rd('f_c').map(t=>t.text);A.filter(a=>!have.includes(a.text)).forEach(a=>box.insertAdjacentHTML('beforeend',irow({text:a.text,owner:a.owner||''})));q||toast('Gündem aktarıldı')}
+/* dosya ekleri (IndexedDB) */
+const IDB=new Promise((res,rej)=>{try{const r=indexedDB.open('tm_files',1);r.onupgradeneeded=()=>r.result.createObjectStore('f',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}});IDB.catch(()=>{});
+const fx=async(mode,fn)=>{const db=await IDB;return new Promise((res,rej)=>{const t=db.transaction('f',mode),q=fn(t.objectStore('f'));t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error)})};
+const fPut=f=>fx('readwrite',s=>s.put(f)),fGet=id=>fx('readonly',s=>s.get(id)),fDel=id=>fx('readwrite',s=>s.delete(id));
+function openF(nid,i){const f=MIN.find(x=>x.id==nid).files[i];fGet(f.id).then(r=>r?dl(r.blob,f.name,f.type||'application/octet-stream'):toast('Dosya bulunamadı')).catch(()=>toast('Dosya açılamadı'))}
+/* çöp kutusu */
+const toTrash=(kind,obj,extra)=>{const e={tid:uid(),kind,obj,extra:extra||{},at:Date.now()};TRASH.push(e);return e};
+const dropE=e=>{if(e.kind=='min')(e.obj.files||[]).forEach(f=>fDel(f.id).catch(()=>{}))};
+function restore(tid){const e=TRASH.find(x=>x.tid==tid);if(!e)return;const o=e.obj,x=e.extra;
+ if(e.kind=='meet'){DB.push(o);MIN.forEach(n=>{if((x.lm||[]).includes(n.id))n.mid=o.id});TASKS.forEach(t=>{if((x.lt||[]).includes(t.id))t.mid=o.id})}
+ else if(e.kind=='min')MIN.push(o);else TASKS.push(o);
+ TRASH=TRASH.filter(y=>y.tid!=tid);save();toast('Geri alındı');go(view,cur)}
+function purge(tid){ask('Kalıcı olarak silinsin mi?',null,()=>{const e=TRASH.find(x=>x.tid==tid);e&&dropE(e);TRASH=TRASH.filter(y=>y.tid!=tid);save();trash()})}
+function emptyTrash(){ask('Çöp kutusu boşaltılsın mı? Bu işlem geri alınamaz.',null,()=>{TRASH.forEach(dropE);TRASH=[];save();trash()})}
+function trash(){const ex=TRASH.filter(e=>Date.now()-e.at>=30*864e5);ex.forEach(dropE);if(ex.length){TRASH=TRASH.filter(e=>!ex.includes(e));save()}
+ const K={meet:'Toplantı',min:'Tutanak',task:'Görev'};
+ $('#m').innerHTML=`<div class="row"><h1 class="sp">Çöp Kutusu</h1>${TRASH.length?'<button class="btn d" onclick="emptyTrash()">Boşalt</button>':''}</div><p class="mu">Silinen öğeler 30 gün saklanır.</p><div class="card">${TRASH.slice().reverse().map(e=>`<div class="item row" style="cursor:default"><span class="tag">${K[e.kind]}</span><div class="sp"><b>${esc(e.obj.title||e.obj.text)}</b><div class="mu">${new Date(e.at).toLocaleString('tr-TR')}</div></div><button class="btn" onclick="restore('${e.tid}')">Geri al</button><button class="btn g" onclick="purge('${e.tid}')">Kalıcı sil</button></div>`).join('')||'<span class="mu">Çöp kutusu boş</span>'}</div>`}
+function delMeet(id){ask('Toplantı çöp kutusuna taşınsın mı?',null,()=>{const m=DB.find(x=>x.id==id),lm=MIN.filter(n=>n.mid==id).map(n=>n.id),lt=TASKS.filter(t=>t.mid==id).map(t=>t.id);
+ DB=DB.filter(x=>x.id!=id);MIN.forEach(n=>{if(n.mid==id)n.mid=''});TASKS.forEach(t=>{if(t.mid==id)t.mid=''});const e=toTrash('meet',m,{lm,lt});save();go('list');toast('Toplantı silindi',()=>restore(e.tid))})}
+function delMin(id){ask('Tutanak çöp kutusuna taşınsın mı?',null,()=>{const n=MIN.find(x=>x.id==id);MIN=MIN.filter(x=>x.id!=id);const e=toTrash('min',n);save();go('mins');toast('Tutanak silindi',()=>restore(e.tid))})}
+function delTask(id){ask('Görev çöp kutusuna taşınsın mı?',null,()=>{const t=TASKS.find(x=>x.id==id);TASKS=TASKS.filter(x=>x.id!=id);const e=toTrash('task',t);save();go('tasks');toast('Görev silindi',()=>restore(e.tid))})}
+async function bkNow(){const files=[];try{for(const n of MIN)for(const f of n.files||[]){const r=await fGet(f.id);if(r)files.push({id:f.id,name:f.name,type:f.type,data:await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(r.blob)})})}}catch(e){toast('Bazı ekler yedeğe eklenemedi')}
+ dl(JSON.stringify({db:DB,min:MIN,tasks:TASKS,tpl:TPL,files},null,1),'toplanti-yedek-'+today()+'.json','application/json');localStorage.setItem('tm_lastbk',Date.now());const b=$('#bkb');b&&b.remove()}
+/* süre sayacı */
+let TM=ld('tm_timer',null);
+const tmSave=()=>localStorage.setItem('tm_timer',JSON.stringify(TM)),tmSec=()=>TM?Math.floor((TM.acc+(TM.since?Date.now()-TM.since:0))/1000):0,hms=s=>[s/3600|0,s/60%60|0,s%60].map(v=>String(v).padStart(2,'0')).join(':');
+function tmStart(mid){if(TM&&TM.mid!=mid)return toast('Başka bir toplantı için sayaç çalışıyor');TM=TM||{mid,acc:0,since:null};if(!TM.since)TM.since=Date.now();tmSave();tmUi()}
+function tmPause(){if(TM&&TM.since){TM.acc+=Date.now()-TM.since;TM.since=null;tmSave();tmUi()}}
+function tmStop(){const m=DB.find(x=>x.id==TM.mid),s=tmSec();if(m)m.dur=(m.dur||0)+s;TM=null;tmSave();save();tmUi();toast('Süre kaydedildi: '+Math.max(1,Math.round(s/60))+' dk');go(view,cur)}
+function tmUi(){let w=$('#tmw');if(!TM){w&&w.remove();return}const m=DB.find(x=>x.id==TM.mid)||{title:''};
+ if(!w){w=document.createElement('div');w.id='tmw';w.style='position:fixed;right:16px;bottom:16px;background:var(--card);color:var(--tx);border:1px solid var(--pr);border-radius:12px;padding:10px 14px;z-index:80;box-shadow:0 4px 16px #0003;display:flex;gap:10px;align-items:center;flex-wrap:wrap;max-width:92vw';document.body.append(w)}
+ w.innerHTML=`<b id="tmt" style="font-size:20px;font-variant-numeric:tabular-nums">⏱ ${hms(tmSec())}</b><span class="mu ell" style="max-width:150px">${esc(m.title)}</span><button class="btn g" onclick="${TM.since?'tmPause()':'tmStart(TM.mid)'}">${TM.since?'⏸ Duraklat':'▶ Devam'}</button><button class="btn d" onclick="tmStop()">⏹ Bitir</button>`}
+setInterval(()=>{const e=$('#tmt');if(e&&TM)e.textContent='⏱ '+hms(tmSec())},1000);
+/* takvim */
+const mn=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],pz=z=>String(z).padStart(2,'0'),dkey=d=>d.getFullYear()+'-'+pz(d.getMonth()+1)+'-'+pz(d.getDate());
+let CAL={d:new Date(),mode:'M',sel:dkey(new Date())};
+function calGo(k){const d=CAL.d;CAL.d=k==0?new Date():CAL.mode=='M'?new Date(d.getFullYear(),d.getMonth()+k,1):new Date(+d+k*7*864e5);cal()}
+function calSel(k){CAL.sel=k;cal()}
+function openTask(id){const t=allTasks().find(x=>x.id==id);t.tid?go('mind',t.tid):t.mid?openMeet(t.mid):go('tasks')}
+function cal(){const d=CAL.d,mo=CAL.mode=='M',T=allTasks().filter(t=>t.due&&!t.done);
+ const st=mo?new Date(d.getFullYear(),d.getMonth(),1):new Date(d);st.setDate(st.getDate()-((st.getDay()+6)%7));const n=mo?42:7,en=new Date(st);en.setDate(st.getDate()+6);
+ let cells='';for(let i=0;i<n;i++){const c=new Date(st);c.setDate(st.getDate()+i);const k=dkey(c),ms=DB.filter(m=>m.when.slice(0,10)==k).sort((a,b)=>a.when.localeCompare(b.when)),ts=T.filter(t=>t.due==k),lim=mo?3:30;
+  const all=[...ms.map(m=>`<div class="cc cm">${m.when.slice(11,16)} ${esc(m.title)}</div>`),...ts.map(t=>`<div class="cc ct ${k<today()?'late':''}">● ${esc(t.text)}</div>`)];
+  cells+=`<div class="cd${mo&&c.getMonth()!=d.getMonth()?' o':''}${k==today()?' t':''}${k==CAL.sel?' s':''}${mo?'':' w'}" onclick="calSel('${k}')"><b>${c.getDate()}</b>${all.slice(0,lim).join('')}${all.length>lim?`<div class="mu" style="font-size:11px">+${all.length-lim} daha</div>`:''}</div>`}
+ const k=CAL.sel,ms=DB.filter(m=>m.when.slice(0,10)==k).sort((a,b)=>a.when.localeCompare(b.when)),ts=T.filter(t=>t.due==k);
+ $('#m').innerHTML=`<div class="row"><h1 class="sp">Takvim</h1><button class="btn g" onclick="calGo(-1)">‹</button><button class="btn g" onclick="calGo(0)">Bugün</button><button class="btn g" onclick="calGo(1)">›</button><button class="btn" onclick="CAL.mode=CAL.mode=='M'?'W':'M';cal()">${mo?'Haftalık':'Aylık'} görünüm</button></div>
+ <p><b>${mo?mn[d.getMonth()]+' '+d.getFullYear():fday(dkey(st))+' – '+fday(dkey(en))}</b> <span class="mu">· 📅 toplantı, ● termin</span></p>
+ <div class="cg">${['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'].map(x=>`<div class="mu" style="text-align:center;font-size:12px">${x}</div>`).join('')}${cells}</div>
+ <div class="card" style="margin-top:12px"><h3>${fday(k)}</h3>${ms.map(m=>`<div class="item" onclick="openMeet('${m.id}')">📅 <b>${m.when.slice(11,16)}</b> ${esc(m.title)} <span class="mu">${esc(m.location)}</span></div>`).join('')}${ts.map(t=>`<div class="item" onclick="openTask('${t.id}')">● ${esc(t.text)} <span class="tag">${t.kind}</span> <span class="mu">${esc(t.owner||'')}</span></div>`).join('')||''}${ms.length||ts.length?'':'<span class="mu">Bu gün için kayıt yok</span>'}</div>`}
+
+$('#cs').onclick=()=>{const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"',P={Y:'Yüksek',O:'Orta',D:'Düşük'};
+ const R=[['Toplantı No','Toplantı','Tutanak','Tarih','Hazırlayan','Tür','Madde','Sorumlu','Termin','Durum']];
+ MIN.forEach(n=>{const m=DB.find(x=>x.id==n.mid)||{};[['Konu',n.topics],['Karar',n.decisions]].forEach(([k,a])=>a.forEach(i=>R.push([n.no||'',m.title||'',n.title,n.date,prepStr(n.prep),k,i.text,i.owner||'',i.due||'',i.done?'Tamam':'Açık']))) });
+ TASKS.forEach(t=>{const m=DB.find(x=>x.id==t.mid)||{};R.push(['',m.title||'','','','','Görev',t.text,t.owner,t.due||'',t.done?'Tamam':'Açık'])});
+ dl('\ufeff'+R.map(r=>r.map(q).join(';')).join('\r\n'),'toplantilar.csv','text/csv')};
+
+function notify(){if(!('Notification' in window)||Notification.permission!='granted')return;
+ const s=ld('tm_seen',{}),now=new Date(),t0=today(),n=(k,t,b)=>{if(s[k])return;s[k]=1;new Notification(t,{body:b})};
+ DB.forEach(m=>{const d=new Date(m.when)-now;if(d>0&&d<=18e5)n('m'+m.id,'Toplantı yaklaşıyor',m.title+' · '+fd(m.when))});
+ allTasks().forEach(t=>{if(t.done||!t.due||t.due>t0)return;n('t'+t.id+(t.due<t0?'l':'t'),t.due<t0?'Geciken termin':'Bugün termin',t.text+' ('+t.mt+')')});
+ try{localStorage.setItem('tm_seen',JSON.stringify(s))}catch(e){}}
+$('#nt').onclick=()=>{if(!('Notification' in window))return toast('Tarayıcı bildirimi desteklemiyor');Notification.requestPermission().then(p=>{toast(p=='granted'?window.native?'Bildirimler açık (pencereyi kapatınca sistem tepsisinde çalışmaya devam eder)':'Bildirimler açıldı (uygulama açıkken çalışır)':'İzin verilmedi');notify()})};
+setInterval(notify,6e4);notify();
+$('#bk').onclick=bkNow;
+$('#rs').onclick=()=>$('#fl').click();
+$('#fl').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(Array.isArray(d))d={db:d};if(!Array.isArray(d.db))throw 0;
+ ask('Mevcut veriler değiştirilecek. Devam?',null,async()=>{DB=d.db;MIN=d.min||[];TASKS=d.tasks||[];TPL=d.tpl||TPL;TRASH=[];norm();save();try{for(const f of d.files||[])await fPut({id:f.id,name:f.name,type:f.type,blob:await(await fetch(f.data)).blob()})}catch(e){toast('Bazı ekler geri yüklenemedi')}go('dash')})}catch(x){toast('Geçersiz dosya')}};r.readAsText(f);e.target.value=''};
+applyTheme();go('dash');if(!PROF)profModal();bkCheck();setInterval(bkCheck,36e5);tmUi();
+</script></body></html>
