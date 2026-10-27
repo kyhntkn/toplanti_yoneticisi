@@ -15,10 +15,10 @@ Yerelde denemek için (Node 20+): `npm install` → `npm start`. Derleme: `npm r
 ## 2) Microsoft Store'a yükleme
 1. Partner Center'da uygulama adını rezerve edin: **Ürün yönetimi → Ürün kimliği** sayfasından şu 3 değeri alın:
    `Package/Identity/Name`, `Package/Identity/Publisher` (CN=...), `PublisherDisplayName`.
-2. `package.json` → `build.appx` bölümündeki `identityName`, `publisher`, `publisherDisplayName` alanlarını bu değerlerle değiştirin (ayrıca `author` ve `copyright`).
+2. `package.json` → `build.appx` bölümündeki kimlik alanları Partner Center değerlerinizle **doldurulmuştur** (`KayhanTEKN.ToplantYneticisi`, `CN=A94C9337-...`, `Kayhan TEKİN`). Değiştirirseniz bu üç alanı güncelleyin.
 3. Workflow'u tekrar çalıştırıp `.appx` dosyasını indirin ve Partner Center'da **Paketler** adımına yükleyin. İmzasız paket kabul edilir, Store paketi kendisi imzalar.
 4. Mağaza sayfası için `store-listing/logo-300x300.png` kullanabilirsiniz. Ekran görüntülerini siz eklersiniz.
-> Yer tutucu kimlikle üretilen `.appx` yalnızca denemedir, Store kabul etmez. Sürümü yükseltirken `package.json` içindeki `version` değerini artırın (Store için son hane 0 kalır).
+> Sürümü yükseltirken `package.json` içindeki `version` değerini artırın (Store için son hane 0 kalır).
 
 ## 3) Özellikler (masaüstüne özel)
 - **Tam otomatik e-posta:** Tutanak sayfası → ✉ E-posta → alıcıyı yazın → **Gönder** (hemen yollar) veya **Taslak olarak aç**. PDF/Word ek olarak eklenir. Klasik masaüstü Outlook gerekir; yeni (web tabanlı) Outlook COM'u desteklemez. Outlook "bir program sizin adınıza e-posta gönderiyor" uyarısı verebilir.

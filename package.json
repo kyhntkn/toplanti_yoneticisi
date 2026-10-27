@@ -2,7 +2,7 @@
   "name": "toplanti-yoneticisi",
   "version": "1.0.0",
   "description": "Toplantı tutanağı, görev ve termin takip uygulaması",
-  "author": "Yayıncı Adı",
+  "author": "Kayhan TEKİN",
   "license": "UNLICENSED",
   "private": true,
   "main": "main.js",
@@ -20,10 +20,25 @@
     "appId": "com.toplanti.yoneticisi",
     "productName": "Toplantı Yöneticisi",
     "executableName": "ToplantiYoneticisi",
-    "copyright": "© Yayıncı Adı",
-    "files": ["main.js", "preload.js", "app/**/*", "assets/**/*"],
-    "directories": { "buildResources": "build", "output": "dist" },
-    "win": { "icon": "build/icon.ico", "target": ["nsis", "portable", "appx"] },
+    "copyright": "© Kayhan TEKİN",
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**/*",
+      "assets/**/*"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "portable",
+        "appx"
+      ]
+    },
     "nsis": {
       "oneClick": false,
       "perMachine": false,
@@ -32,14 +47,18 @@
       "shortcutName": "Toplantı Yöneticisi",
       "artifactName": "ToplantiYoneticisi-Kurulum-${version}.exe"
     },
-    "portable": { "artifactName": "ToplantiYoneticisi-Tasinabilir-${version}.exe" },
+    "portable": {
+      "artifactName": "ToplantiYoneticisi-Tasinabilir-${version}.exe"
+    },
     "appx": {
-      "identityName": "Yayinci.ToplantiYoneticisi",
-      "publisher": "CN=00000000-0000-0000-0000-000000000000",
-      "publisherDisplayName": "Yayıncı Adı",
+      "identityName": "KayhanTEKN.ToplantYneticisi",
+      "publisher": "CN=A94C9337-5C18-44C3-9DCE-433C130AD6A2",
+      "publisherDisplayName": "Kayhan TEKİN",
       "applicationId": "ToplantiYoneticisi",
       "displayName": "Toplantı Yöneticisi",
-      "languages": ["tr-TR"],
+      "languages": [
+        "tr-TR"
+      ],
       "backgroundColor": "#2b5fd9",
       "showNameOnTiles": false,
       "artifactName": "ToplantiYoneticisi-${version}.appx"
