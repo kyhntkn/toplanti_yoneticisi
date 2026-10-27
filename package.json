@@ -1,0 +1,48 @@
+{
+  "name": "toplanti-yoneticisi",
+  "version": "1.0.0",
+  "description": "Toplantı tutanağı, görev ve termin takip uygulaması",
+  "author": "Yayıncı Adı",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:exe": "electron-builder --win nsis portable --publish never",
+    "dist:store": "electron-builder --win appx --publish never",
+    "dist": "npm run dist:exe && npm run dist:store"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.toplanti.yoneticisi",
+    "productName": "Toplantı Yöneticisi",
+    "executableName": "ToplantiYoneticisi",
+    "copyright": "© Yayıncı Adı",
+    "files": ["main.js", "preload.js", "app/**/*", "assets/**/*"],
+    "directories": { "buildResources": "build", "output": "dist" },
+    "win": { "icon": "build/icon.ico", "target": ["nsis", "portable", "appx"] },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Toplantı Yöneticisi",
+      "artifactName": "ToplantiYoneticisi-Kurulum-${version}.exe"
+    },
+    "portable": { "artifactName": "ToplantiYoneticisi-Tasinabilir-${version}.exe" },
+    "appx": {
+      "identityName": "Yayinci.ToplantiYoneticisi",
+      "publisher": "CN=00000000-0000-0000-0000-000000000000",
+      "publisherDisplayName": "Yayıncı Adı",
+      "applicationId": "ToplantiYoneticisi",
+      "displayName": "Toplantı Yöneticisi",
+      "languages": ["tr-TR"],
+      "backgroundColor": "#2b5fd9",
+      "showNameOnTiles": false,
+      "artifactName": "ToplantiYoneticisi-${version}.appx"
+    }
+  }
+}
